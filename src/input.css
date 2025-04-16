@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+@font-face {
+    font-family: 'f1-normal-400';
+    src: url(../assets/fonts/f1-normal-400.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'f1-normal-700';
+    src: url(../assets/fonts/f1-normal-700.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'f1-normal-900';
+    src: url(../assets/fonts/f1-normal-900.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'f1-italic-400';
+    src: url(../assets/fonts/f1-italic-400.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'f1-wide-400';
+    src: url(../assets/fonts/f1-wide-400.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'f1-normal-digits';
+    src: url(../assets/fonts/f1-normal-digits.ttf) format('truetype');
+}
+
+
+@import "tailwindcss";
+
+@theme {
+    --font-f1-normal-400: f1-normal-400, sans-serif;
+    --font-f1-normal-700: f1-normal-700, sans-serif;
+    --font-f1-normal-900: f1-normal-900, sans-serif;
+
+    --font-f1-italic-400: f1-italic-400, sans-serif;
+
+    --font-f1-wide-400: f1-wide-400, sans-serif;
+
+    --font-f1-normal-digits: f1-normal-digits, sans-serif;
+}
