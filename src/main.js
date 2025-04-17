@@ -6,12 +6,12 @@ import { getDrivers } from './components/drivers.js'
  * @property {number} driver_number - driver's car number
  */
 getDrivers().then(drivers => {
-    const app = document.querySelector('#app');
+    const driverSelect = document.getElementById('driver-select');
 
-    if (app && drivers.length > 0) {
-        const listItems = drivers.map(driver => `<li>${driver.broadcast_name} - ${driver.driver_number}</li>`).join('');
-        app.innerHTML = `<ul class="dark:text-white">${listItems}</ul>`;
+    if (driverSelect && drivers.length > 0) {
+        const driverOptions = drivers.map(driver => `<option class="dark:bg-red-700" value="${driver.driver_number}">${driver.broadcast_name}</option>`).join('');
+        driverSelect.innerHTML = driverOptions;
     } else {
-        app.innerHTML = '<p>Nessun pilota trovato.</p>';
+        driverSelect.innerHTML = '<p>Nessun pilota trovato.</p>';
     }
 });
