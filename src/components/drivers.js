@@ -5,21 +5,41 @@ const api = axios.create({
 })
 
 /**
+ * get latest session_key
+ *
+ * @async
+ * @returns {Promise<number>} highest meeting_key
+ */
+const getLatestRaceSession = async () => {
+    const date = new Date();
+    const response = await api.get('/sessions', {
+        params: {
+            session_name: 'Race',
+            year: date.getFullYear()
+        }
+    })
+    // console.log(response.data);
+    const session = response.data
+    const latestRaceSession = Math.max(...session.map(m => m.session_key));
+    // console.log(latestRaceSession);
+
+    return latestRaceSession
+}
+
+/**
  * fetch a list of drivers for a specific session
  *
  * @async
- * @function getDrivers
  * @returns {Promise<Object[]>} promise that resolves to an array of driver objects
  */
 export const getDrivers = async () => {
-    const sessionKey = '9686';
+    const lastRaceSession = await getLatestRaceSession();
 
     const response = await api.get('/drivers', {
         params: {
-            session_key: sessionKey
+            session_key: lastRaceSession
         }
     });
-
-    console.log(response);
+    console.log(response.data);
     return response.data;
 };
