@@ -41,5 +41,7 @@ export const getDrivers = async () => {
         }
     });
     console.log(response.data);
-    return response.data;
+    const driversObj = response.data
+
+    return driversObj;
 };
