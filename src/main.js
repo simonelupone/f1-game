@@ -1,24 +1,101 @@
-import { getDrivers } from './modules/drivers.js';
+import { getDrivers } from './api/drivers.js';
 import { createDriversSelect } from './components/driversSelect.js';
 import { createDriversList } from './components/driversList.js';
+import { loadingSpinner } from './components/loader.js';
 
 const driversSelect = document.getElementById('drivers-select');
 const driversList = document.getElementById('drivers-list');
+const selectButton = document.getElementById('select-button');
+const loader = document.getElementById('loader');
+const app = document.getElementById('app');
+
+let myDrivers = [];
 
 /**
- * @typedef {Object} Driver
- * @property {string} broadcast_name - driver's name (uppercase e.g C LECLERC)
- * @property {number} driver_number - driver's car number
+ * Creates and shows a loading spinner
+ * @returns {HTMLElement} The created loader element
  */
-getDrivers().then(drivers => {
-    if (driversSelect && driversList && drivers.length > 0) {
+const showLoader = () => {
 
-        const driversOptions = drivers.map(createDriversSelect).join('');
-        const driversListItems = drivers.map(createDriversList).join('');
+    loader.innerHTML = loadingSpinner()
+    app.prepend(loader);
+    return loader;
+};
 
-        driversSelect.innerHTML = driversOptions;
-        driversList.innerHTML = driversListItems;
-    } else {
-        driversSelect.innerHTML = '<p>Nessun pilota trovato.</p>';
+/**
+ * Removes loading spinner
+ */
+const hideLoader = () => {
+
+    if (loader) {
+        loader.remove();
     }
-});
+};
+
+/**
+ * Updates with the current list of drivers
+ * Marks selected drivers
+ */
+const updateDriversList = () => {
+
+    if (driversList && myDrivers.length > 0) {
+
+        // Populate ul
+        const driversListItems = myDrivers.map(createDriversList).join('');
+        driversList.innerHTML = driversListItems;
+    }
+};
+
+/**
+ * Handles driver selection when the select button is clicked
+ * Updates the selected state of the driver and refreshes the UI
+ */
+const driverSelection = () => {
+
+    const selectedDriverNumber = parseInt(driversSelect.value);
+
+    // Update drivers with custom property
+    myDrivers = myDrivers.map(driver => ({
+        ...driver,
+        selected: driver.driver_number === selectedDriverNumber
+    }));
+
+    updateDriversList();
+};
+
+/**
+ * Initializes the application
+ * Fetches drivers data, populates the select dropdown and list
+ * Sets up event listeners
+ */
+const initDrivers = async () => {
+
+    showLoader();
+
+    try {
+        myDrivers = await getDrivers();
+
+        if (driversSelect && driversList && myDrivers.length > 0) {
+
+            // Populate select
+            const driversOptions = myDrivers.map(createDriversSelect).join('');
+            driversSelect.innerHTML = driversOptions;
+
+            updateDriversList();
+
+            selectButton.addEventListener('click', driverSelection);
+        } else {
+            if (driversList) {
+                driversList.innerHTML = '<p>No drivers found.</p>';
+            }
+        }
+    } catch (error) {
+        console.error('Error loading drivers:', error);
+        if (driversList) {
+            driversList.innerHTML = '<p>Error loading drivers data.</p>';
+        }
+    } finally {
+        hideLoader();
+    }
+};
+initDrivers();
