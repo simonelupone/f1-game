@@ -1,10 +1,11 @@
 import { getDrivers } from './api/drivers.js';
 import { createDriversSelect } from './components/driversSelect.js';
-import { createDriversList } from './components/driversList.js';
+import { createDriverRow } from './components/driversList.js';
 import { loadingSpinner } from './components/loader.js';
 
 const driversSelect = document.getElementById('drivers-select');
-const driversList = document.getElementById('drivers-list');
+// const driversList = document.getElementById('drivers-list');
+const tbody = document.querySelector('table tbody');
 const selectButton = document.getElementById('select-button');
 const loader = document.getElementById('loader');
 const app = document.getElementById('app');
@@ -38,11 +39,11 @@ const hideLoader = () => {
  */
 const updateDriversList = () => {
 
-    if (driversList && myDrivers.length > 0) {
+    if (tbody && myDrivers.length > 0) {
 
         // Populate ul
-        const driversListItems = myDrivers.map(createDriversList).join('');
-        driversList.innerHTML = driversListItems;
+        const driversRow = myDrivers.map(createDriverRow).join('');
+        tbody.innerHTML = driversRow;
     }
 };
 
@@ -75,7 +76,7 @@ const initDrivers = async () => {
     try {
         myDrivers = await getDrivers();
 
-        if (driversSelect && driversList && myDrivers.length > 0) {
+        if (driversSelect && tbody && myDrivers.length > 0) {
 
             // Populate select
             const driversOptions = myDrivers.map(createDriversSelect).join('');
@@ -85,17 +86,22 @@ const initDrivers = async () => {
 
             selectButton.addEventListener('click', driverSelection);
         } else {
-            if (driversList) {
-                driversList.innerHTML = '<p>No drivers found.</p>';
+            if (tbody) {
+                tbody.innerHTML = '<p>No drivers found.</p>';
             }
         }
     } catch (error) {
         console.error('Error loading drivers:', error);
-        if (driversList) {
-            driversList.innerHTML = '<p>Error loading drivers data.</p>';
+        if (tbody) {
+            tbody.innerHTML = '<p>Error loading drivers data.</p>';
         }
     } finally {
         hideLoader();
     }
 };
 initDrivers();
+
+/**
+ * function to start a race
+ */
+
