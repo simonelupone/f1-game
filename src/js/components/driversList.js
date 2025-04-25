@@ -2,11 +2,11 @@ export const createDriverRow = ({ last_name, team_colour, selected }, index) => 
     const position = index + 1;
     return `
         <tr class="${selected
-            ? 'bg-slate-200 dark:bg-slate-800/40'
+            ? 'bg-red-200 dark:bg-red-800/40'
             : 'odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800'} 
             border-b dark:border-gray-700 border-gray-200">
             
-            <td scope="row"
+            <td
                 class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap text-center dark:text-white">
                 <div class="flex items-center gap-2">
                     <span class="w-6 font-f1-normal-700">${position}</span>
