@@ -14,10 +14,11 @@
 
 
         <header class="bg-slate-600 dark:bg-slate-700">
-            <div class="ml-12 h-32 flex items-center">
+            <div class="ml-12 h-32 flex items-center gap-2">
                 <div id="loader"></div>
 
-                <select id="drivers-select" class="font-f1-normal-700 bg-slate-600 text-white"></select>
+                <label for="drivers-select" class="font-f1-italic-400"> Select your driver: </label>
+                <select id="drivers-select" class="font-f1-normal-700 bg-slate-600 dark:bg-slate-700 text-white"></select>
 
                 <button type="button" id="select-button"
                     class="focus:outline-none text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4.5 py-1 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-900">
@@ -66,7 +67,7 @@
     </div>
 
 
-    <script type="module" src="./main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
