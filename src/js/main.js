@@ -1,37 +1,13 @@
-import { getDrivers } from './api/drivers.js';
-import { createDriversSelect } from './components/driversSelect.js';
-import { createDriverRow } from './components/driversList.js';
-import { loadingSpinner } from './components/loader.js';
+import {domElements} from './dom.js';
+import {getDrivers} from './api/drivers.js';
+import {createDriversSelect} from './components/driversSelect.js';
+import {createDriverRow} from './components/driversList.js';
+import {showLoader, hideLoader} from "./utils.js";
+import {loadingSpinner} from './components/loader.js';
 
-const driversSelect = document.getElementById('drivers-select');
-// const driversList = document.getElementById('drivers-list');
-const tbody = document.querySelector('table tbody');
-const selectButton = document.getElementById('select-button');
-const loader = document.getElementById('loader');
-const app = document.getElementById('app');
+const {driversSelect, tbody, selectButton, loader, app} = domElements
 
 let myDrivers = [];
-
-/**
- * Creates and shows a loading spinner
- * @returns {HTMLElement} The created loader element
- */
-const showLoader = () => {
-
-    loader.innerHTML = loadingSpinner()
-    app.prepend(loader);
-    return loader;
-};
-
-/**
- * Removes loading spinner
- */
-const hideLoader = () => {
-
-    if (loader) {
-        loader.remove();
-    }
-};
 
 /**
  * Updates with the current list of drivers
@@ -71,7 +47,7 @@ const driverSelection = () => {
  */
 const initDrivers = async () => {
 
-    showLoader();
+    showLoader(loader, app, loadingSpinner);
 
     try {
         myDrivers = await getDrivers();
@@ -79,8 +55,7 @@ const initDrivers = async () => {
         if (driversSelect && tbody && myDrivers.length > 0) {
 
             // Populate select
-            const driversOptions = myDrivers.map(createDriversSelect).join('');
-            driversSelect.innerHTML = driversOptions;
+            driversSelect.innerHTML = myDrivers.map(createDriversSelect).join('');
 
             updateDriversList();
 
@@ -96,12 +71,9 @@ const initDrivers = async () => {
             tbody.innerHTML = '<p>Error loading drivers data.</p>';
         }
     } finally {
-        hideLoader();
+        hideLoader(loader);
     }
 };
 initDrivers();
 
-/**
- * function to start a race
- */
 
