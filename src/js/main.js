@@ -1,11 +1,16 @@
 import {domElements} from './dom.js';
 import {getDrivers} from './api/drivers.js';
 import {createDriversSelect} from './components/driversSelect.js';
-import {createDriverRow} from './components/driversList.js';
+import {createDrivers} from './components/driversList.js';
 import {showLoader, hideLoader} from "./utils.js";
 import {loadingSpinner} from './components/loader.js';
+import {createRow} from "./components/tableRow.js";
+import {lap, formatLapTime} from "./game/lapEngine.js";
+import {times} from "./components/driversTime.js";
 
-const {driversSelect, tbody, selectButton, loader, app} = domElements
+console.log(formatLapTime(lap()));
+
+const {driversSelect, tbody, selectButton, loader, app, startButton} = domElements
 
 let myDrivers = [];
 
@@ -17,11 +22,39 @@ const updateDriversList = () => {
 
     if (tbody && myDrivers.length > 0) {
 
-        // Populate ul
-        const driversRow = myDrivers.map(createDriverRow).join('');
-        tbody.innerHTML = driversRow;
+        myDrivers.sort((a, b) => {
+            if(a.time === null) return 1
+            if(b.time === null) return -1
+            return a.time - b.time
+        })
+        tbody.innerHTML = myDrivers
+            .map((driver, index) => {
+                const driverCells = createDrivers(driver, index);
+
+                //others cells...
+                // const cells = driverCells + ...
+                // ...add to createRow in elements
+                const timeCells = times(driver.time != null ? formatLapTime(driver.time) : '---');
+
+                const cells = driverCells + timeCells;
+                return createRow({selected: driver.selected, elements: cells});
+            })
+            .join('');
     }
 };
+
+const assignTime = () => {
+    myDrivers = myDrivers.map(driver => ({
+        ...driver,
+        time: lap()
+    }));
+
+    updateDriversList();
+};
+
+
+startButton.addEventListener('click', assignTime);
+
 
 /**
  * Handles driver selection when the select button is clicked

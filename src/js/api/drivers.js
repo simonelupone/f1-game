@@ -41,6 +41,7 @@ export const getDrivers = async () => {
     const driversObj = response.data;
     const myDrivers = driversObj.map(driver => ({
         ...driver,
+        time: 0,
         selected: false,
     }));
 
