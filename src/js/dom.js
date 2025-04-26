@@ -13,5 +13,6 @@ export const domElements = {
     tbody:  document.querySelector('table tbody'),
     selectButton: document.getElementById('select-button'),
     loader: document.getElementById('loader'),
-    app: document.getElementById('app')
+    app: document.getElementById('app'),
+    startButton: document.getElementById('start-button'),
 }
