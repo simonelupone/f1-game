@@ -35,8 +35,9 @@ const updateDriversList = () => {
                 // const cells = driverCells + ...
                 // ...add to createRow in elements
                 const timeCells = times(driver.time != null ? formatLapTime(driver.time) : '---');
+                const intervalCell = times(driver.interval !== '' ? formatLapTime(driver.interval) : '');
 
-                const cells = driverCells + timeCells;
+                const cells = driverCells + timeCells + intervalCell;
                 return createRow({selected: driver.selected, elements: cells});
             })
             .join('');
@@ -44,13 +45,24 @@ const updateDriversList = () => {
 };
 
 const assignTime = () => {
-    myDrivers = myDrivers.map(driver => ({
+    myDrivers = myDrivers.map((driver, index) => ({
         ...driver,
-        time: lap()
+        time: lap(),
     }));
-
+    // console.log(myDrivers)
     updateDriversList();
+    assignInterval();
 };
+
+const assignInterval = () => {
+    myDrivers = myDrivers.map((driver, index) => ({
+        ...driver,
+        index: index,
+        interval: index > 0 ? driver.time - myDrivers[index - 1].time : '',
+    }))
+    console.log(myDrivers)
+    updateDriversList();
+}
 
 
 startButton.addEventListener('click', assignTime);

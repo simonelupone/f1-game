@@ -4,10 +4,13 @@ export const lap = (baseTime = 90000, variance = 3000) => {
 }
 
 export const formatLapTime = (timeMs) => {
-    if (!timeMs) return '';
-
+    if(!timeMs) return '';
     const minutes = Math.floor(timeMs / 60000);
     const seconds = Math.floor((timeMs % 60000) / 1000);
     const milliseconds = Math.floor(timeMs % 1000);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+    if(timeMs >= 60000) {
+        return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+    } else {
+        return `${seconds.toString().padStart(1, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+    }
 }
