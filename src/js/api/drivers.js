@@ -39,12 +39,15 @@ export const getDrivers = async () => {
     });
 
     const driversObj = response.data;
-    const myDrivers = driversObj.map(driver => ({
+    const myDrivers = driversObj.map((driver) => ({
         ...driver,
+        index: 0,
         time: 0,
         selected: false,
+        interval: 0,
+        toLeader: 0
     }));
 
-    console.log('Drivers loaded:', myDrivers);
+    // console.log('Drivers loaded:', myDrivers);
     return myDrivers;
 };
