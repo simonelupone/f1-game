@@ -7,6 +7,7 @@ import {loadingSpinner} from './components/loader.js';
 import {createRow} from "./components/tableRow.js";
 import {lap, formatLapTime} from "./game/lapEngine.js";
 import {times} from "./components/driversTime.js";
+import {tyreIcon} from "./components/tyres.js";
 
 console.log(formatLapTime(lap()));
 
@@ -37,8 +38,9 @@ const updateDriversList = () => {
                 const timeCells = times(driver.time != null ? formatLapTime(driver.time) : '---');
                 const intervalCell = times(driver.interval !== '' ? formatLapTime(driver.interval) : '');
                 const toLeaderCell = times(driver.toLeader !== '' ? formatLapTime(driver.toLeader) : '');
+                const tyreCell = driver.tyre !== '' ? tyreIcon(driver.tyre) : '';
 
-                const cells = driverCells + timeCells + intervalCell + toLeaderCell;
+                const cells = driverCells + timeCells + intervalCell + toLeaderCell + tyreCell;
                 return createRow({selected: driver.selected, elements: cells});
             })
             .join('');
@@ -54,6 +56,7 @@ const assignTime = () => {
     updateDriversList();
     assignInterval();
     gapToLeader();
+    assignTyre()
 };
 
 const assignInterval = () => {
@@ -72,6 +75,21 @@ const gapToLeader = () => {
         toLeader: index > 0 ? driver.time - myDrivers[0].time : '',
     }))
     console.log(myDrivers)
+    updateDriversList()
+}
+
+const assignTyre = () => {
+    const tyres = ['soft', 'medium', 'hard']
+    const randomIndex = () => Math.floor(Math.random() * tyres.length)
+    console.log('random Index: ' + randomIndex())
+    myDrivers = myDrivers.map((driver) => ({
+        ...driver,
+        // tyre: Math.floor(Math.random() * tyres.length)
+        tyre: tyres[randomIndex(tyres)]
+
+    }))
+    console.log(myDrivers)
+
     updateDriversList()
 }
 
