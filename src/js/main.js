@@ -46,7 +46,7 @@ const updateDriversList = () => {
 };
 
 const assignTime = () => {
-    myDrivers = myDrivers.map((driver, index) => ({
+    myDrivers = myDrivers.map((driver) => ({
         ...driver,
         time: lap(),
     }));
