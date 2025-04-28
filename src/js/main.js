@@ -35,9 +35,10 @@ const updateDriversList = () => {
                 // const cells = driverCells + ...
                 // ...add to createRow in elements
                 const timeCells = times(driver.time != null ? formatLapTime(driver.time) : '---');
-                const intervalCell = times(driver.interval !== '' ? formatLapTime(driver.interval) : '');
+                const intervalCell = times(driver.interval !== '' ? '+' +  formatLapTime(driver.interval) : '');
+                const toLeaderCell = times(driver.toLeader !== '' ? '+' +  formatLapTime(driver.toLeader) : '');
 
-                const cells = driverCells + timeCells + intervalCell;
+                const cells = driverCells + timeCells + intervalCell + toLeaderCell;
                 return createRow({selected: driver.selected, elements: cells});
             })
             .join('');
@@ -52,6 +53,7 @@ const assignTime = () => {
     // console.log(myDrivers)
     updateDriversList();
     assignInterval();
+    gapToLeader();
 };
 
 const assignInterval = () => {
@@ -62,6 +64,15 @@ const assignInterval = () => {
     }))
     console.log(myDrivers)
     updateDriversList();
+}
+
+const gapToLeader = () => {
+    myDrivers = myDrivers.map((driver, index) => ({
+        ...driver,
+        toLeader: index > 0 ? driver.time - myDrivers[0].time : '',
+    }))
+    console.log(myDrivers)
+    updateDriversList()
 }
 
 
