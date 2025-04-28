@@ -35,8 +35,8 @@ const updateDriversList = () => {
                 // const cells = driverCells + ...
                 // ...add to createRow in elements
                 const timeCells = times(driver.time != null ? formatLapTime(driver.time) : '---');
-                const intervalCell = times(driver.interval !== '' ? '+' +  formatLapTime(driver.interval) : '');
-                const toLeaderCell = times(driver.toLeader !== '' ? '+' +  formatLapTime(driver.toLeader) : '');
+                const intervalCell = times(driver.interval !== '' ? formatLapTime(driver.interval) : '');
+                const toLeaderCell = times(driver.toLeader !== '' ? formatLapTime(driver.toLeader) : '');
 
                 const cells = driverCells + timeCells + intervalCell + toLeaderCell;
                 return createRow({selected: driver.selected, elements: cells});

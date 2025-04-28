@@ -4,7 +4,7 @@ export const lap = (baseTime = 90000, variance = 3000) => {
 }
 
 export const formatLapTime = (timeMs) => {
-    if(!timeMs && timeMs !== 0) return '';
+    if(!timeMs) return '';
     // use Math.abs to ensure input time is positive (to avoid format like 0,-014)
     const absTime = Math.abs(timeMs);
     const minutes = Math.floor(absTime / 60000);
