@@ -45,7 +45,8 @@ export const getDrivers = async () => {
         time: 0,
         selected: false,
         interval: 0,
-        toLeader: 0
+        toLeader: 0,
+        tyre: ''
     }));
 
     // console.log('Drivers loaded:', myDrivers);
