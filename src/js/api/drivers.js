@@ -1,4 +1,5 @@
 import axios from 'https://cdn.jsdelivr.net/npm/axios@1.6.8/+esm';
+import {skillMap} from "../game/driversSkill.js";
 
 const api = axios.create({
     baseURL: 'https://api.openf1.org/v1'
@@ -13,8 +14,7 @@ const getLatestRaceSession = async () => {
     const date = new Date();
     const response = await api.get('/sessions', {
         params: {
-            session_name: 'Race',
-            year: date.getFullYear()
+            session_name: 'Race', year: date.getFullYear()
         }
     });
 
@@ -39,7 +39,7 @@ export const getDrivers = async () => {
     });
 
     const driversObj = response.data;
-    const myDrivers = driversObj.map((driver) => ({
+    const apiDrivers = driversObj.map((driver) => ({
         ...driver,
         index: 0,
         time: 0,
@@ -48,7 +48,16 @@ export const getDrivers = async () => {
         toLeader: 0,
         tyre: ''
     }));
-
-    // console.log('Drivers loaded:', myDrivers);
+    const myDrivers = getCustomDrivers(apiDrivers, skillMap)
     return myDrivers;
 };
+
+ const getCustomDrivers = (drivers, skillMap) => {
+    return drivers.map(driver => {
+        const matchDriver = skillMap.find(s => s.name_acronym === driver.name_acronym);
+        return {
+            ...driver,
+            skill: matchDriver ? matchDriver.skill : null
+        }
+    })
+}

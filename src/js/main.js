@@ -56,7 +56,7 @@ const assignTime = () => {
     updateDriversList();
     assignInterval();
     gapToLeader();
-    assignTyre()
+    assignTyre();
 };
 
 const assignInterval = () => {
@@ -149,5 +149,3 @@ const initDrivers = async () => {
     }
 };
 initDrivers();
-
-
